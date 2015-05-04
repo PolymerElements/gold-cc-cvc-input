@@ -1,0 +1,1 @@
+# gold-cc-cvc-input
