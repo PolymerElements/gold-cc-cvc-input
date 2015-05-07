@@ -44,7 +44,7 @@ Example:
   <template>
     <paper-input-container id="container">
 
-      <template is="x-if" if="[[label]]">
+      <template is="dom-if" if="[[label]]">
         <label>[[parent.label]]</label>
       </template>
 
@@ -58,7 +58,7 @@ Example:
       <iron-icon id="icon" src="cvc_hint.png" hidden="[[amex]]"></iron-icon>
       <iron-icon id="amexIcon" hidden="[[!amex]]" src="cvc_hint_amex.png"></iron-icon>
 
-      <template is="x-if" if="[[errorMessage]]">
+      <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error>[[parent.errorMessage]]</paper-input-error>
       </template>
 
