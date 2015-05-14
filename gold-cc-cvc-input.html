@@ -51,7 +51,7 @@ Example:
       <div class="horizontal layout">
         <input is="iron-input" id="input" class="flex"
             bind-value="{{value}}"
-            prevent-invalid-input pattern="[0-9]*"
+            prevent-invalid-input allowed-pattern="[0-9]"
             required$="[[required]]"
             type="tel"
             maxlength$="[[_requiredLength]]">
@@ -106,8 +106,12 @@ Example:
       'input': '_onInput'
     },
 
+    ready: function() {
+      this._onInput();
+    },
+
     _onInput: function() {
-      this.$.container._inputIsInvalid = this.autoValidate &&
+      this.$.container.invalid = this.autoValidate &&
                                          this.value.length != this._requiredLength;
     },
 
