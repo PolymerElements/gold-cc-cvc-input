@@ -69,7 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         forceXIfStamp(input);
         var container = Polymer.dom(input.root).querySelector('paper-input-container');
         assert.ok(container, 'paper-input-container exists');
-        assert.isFalse(container._inputIsInvalid);
+        assert.isFalse(container.invalid);
       });
 
       test('invalid input is not ok', function() {
@@ -79,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         forceXIfStamp(input);
         var container = Polymer.dom(input.root).querySelector('paper-input-container');
         assert.ok(container, 'paper-input-container exists');
-        assert.isTrue(container._inputIsInvalid);
+        assert.isTrue(container.invalid);
       });
 
       test('empty required input shows error', function() {
