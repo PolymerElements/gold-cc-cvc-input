@@ -40,7 +40,6 @@ Example:
 
   iron-icon {
     margin-left: 10px;
-    margin-bottom: 3px;
   }
   </style>
 
@@ -58,10 +57,11 @@ Example:
             required$="[[required]]"
             type="tel"
             maxlength$="[[_requiredLength]]"
+            autocomplete$="[[autocomplete]]"
             name$="[[name]]">
 
-        <iron-icon id="icon" src="cvc_hint.png" hidden="[[amex]]"></iron-icon>
-        <iron-icon id="amexIcon" hidden="[[!amex]]" src="cvc_hint_amex.png"></iron-icon>
+        <iron-icon id="icon" src="cvc_hint.png" hidden$="[[amex]]" alt="cvc"></iron-icon>
+        <iron-icon id="amexIcon" hidden$="[[!amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
       </div>
 
       <template is="dom-if" if="[[errorMessage]]">
