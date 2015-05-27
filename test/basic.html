@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <test-fixture id="amex">
     <template>
-      <gold-cc-cvc-input amex></gold-cc-cvc-input>
+      <gold-cc-cvc-input amex required error-message="error"></gold-cc-cvc-input>
     </template>
   </test-fixture>
 
@@ -87,6 +87,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         forceXIfStamp(input);
         var error = Polymer.dom(input.root).querySelector('paper-input-error');
         assert.ok(error, 'paper-input-error exists');
+        assert.notEqual(getComputedStyle(error).display, 'none', 'error is not display:none');
+      });
+
+      test('invalid input shows error message after manual validation', function() {
+        var input = fixture('amex');
+        forceXIfStamp(input);
+        var error = Polymer.dom(input.root).querySelector('paper-input-error');
+        assert.ok(error, 'paper-input-error exists');
+
+        // The error message is only displayed after manual validation.
+        assert.equal(getComputedStyle(error).display, 'none', 'error is not display:none');
+        input.validate();
         assert.notEqual(getComputedStyle(error).display, 'none', 'error is not display:none');
       });
     });

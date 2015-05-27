@@ -116,12 +116,32 @@ Example:
     },
 
     _onInput: function() {
-      this.$.container.invalid = this.autoValidate &&
-                                         this.value.length != this._requiredLength;
+      if (this.autoValidate) {
+        this.validate();
+      }
     },
 
     _computeRequiredLength: function(amex) {
       return this.amex ? 4 : 3;
+    },
+
+    validate: function() {
+      // Empty, non-required input is valid.
+      if (!this.required && this.value == '') {
+        return true;
+      }
+
+      var valid = this.value.length == this._requiredLength;
+
+      // Update the container and its addons (i.e. the custom error-message).
+      this.$.container.invalid = !valid;
+      this.$.container.updateAddons({
+        inputElement: this.$.input,
+        value: this.value,
+        invalid: !valid
+      });
+
+      return valid;
     }
   })
 
