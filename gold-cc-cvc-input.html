@@ -64,7 +64,11 @@ style this element.
   </style>
 
   <template>
-    <paper-input-container id="container">
+    <paper-input-container id="container"
+        disabled$="[[disabled]]"
+        no-label-float="[[noLabelFloat]]"
+        always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]"
+        invalid="[[invalid]]">
 
       <label hidden$="[[!label]]">[[label]]</label>
 
@@ -78,7 +82,14 @@ style this element.
             type="tel"
             maxlength$="[[_requiredLength]]"
             autocomplete="cc-csc"
-            name$="[[name]]">
+            name$="[[name]]"
+            disabled$="[[disabled]]"
+            invalid="{{invalid}}"
+            autofocus$="[[autofocus]]"
+            inputmode$="[[inputmode]]"
+            placeholder$="[[placeholder]]"
+            readonly$="[[readonly]]"
+            size$="[[size]]">
 
         <iron-icon id="icon" src="cvc_hint.png" hidden$="[[amex]]" alt="cvc"></iron-icon>
         <iron-icon id="amexIcon" hidden$="[[!amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
