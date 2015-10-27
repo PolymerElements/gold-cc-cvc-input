@@ -11,9 +11,7 @@
     "gold",
     "input"
   ],
-  "main": [
-    "gold-cc-cvc-input.html"
-  ],
+  "main": "gold-cc-cvc-input.html",
   "private": true,
   "repository": {
     "type": "git",
