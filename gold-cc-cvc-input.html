@@ -51,6 +51,10 @@ See `Polymer.PaperInputBehavior` for more API docs.
 See `Polymer.PaperInputContainer` for a list of custom properties used to
 style this element.
 
+Custom property | Description | Default 
+----------------|-------------|---------- 
+`--gold-cc-cvc-input-icon` | Mixin applied to the icon | `{}`
+
 @group Gold Elements
 @hero hero.svg
 @demo demo/index.html
@@ -63,8 +67,9 @@ style this element.
         display: block;
       }
 
-      iron-icon {
+      .cvc-icon {
         margin-left: 10px;
+        @apply(--gold-cc-cvc-input-icon);
       }
 
       .container {
@@ -102,9 +107,9 @@ style this element.
             placeholder$="[[placeholder]]"
             readonly$="[[readonly]]"
             size$="[[size]]">
-
-        <iron-icon id="icon" src="cvc_hint.png" hidden$="[[_amex]]" alt="cvc"></iron-icon>
-        <iron-icon id="amexIcon" hidden$="[[!_amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
+            
+        <iron-icon class="cvc-icon" id="icon" src="cvc_hint.png" hidden$="[[_amex]]" alt="cvc"></iron-icon>
+        <iron-icon class="cvc-icon" id="amexIcon" hidden$="[[!_amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
       </div>
 
       <template is="dom-if" if="[[errorMessage]]">
@@ -223,6 +228,5 @@ style this element.
       })
 
     })();
-
   </script>
 </dom-module>
