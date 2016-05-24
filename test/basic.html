@@ -37,7 +37,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <test-fixture id="amex">
     <template>
-      <gold-cc-cvc-input card-type="amex" required error-message="error"></gold-cc-cvc-input>
+      <gold-cc-cvc-input card-type="amex"></gold-cc-cvc-input>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="non-amex">
+    <template>
+      <gold-cc-cvc-input card-type="visa"></gold-cc-cvc-input>
     </template>
   </test-fixture>
 
@@ -47,13 +53,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
+  <test-fixture id="required-amex">
+    <template>
+      <gold-cc-cvc-input card-type="amex" required error-message="error"></gold-cc-cvc-input>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="validity-check">
+    <template>
+      <gold-cc-cvc-input auto-validate required error-message="error"></gold-cc-cvc-input>
+    </template>
+  </test-fixture>
+
   <script>
 
     suite('basic', function() {
 
-      test('max length for a non-amex cc is 3', function() {
+      test('max length for unknown card type is 4', function() {
         var input = fixture('basic');
-        assert.equal(input.inputElement.maxLength, 3);
+        assert.equal(input.inputElement.maxLength, 4);
       });
 
       test('max length for an amex cc is 4', function() {
@@ -61,7 +79,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(input.inputElement.maxLength, 4);
       });
 
-      test('valid input is ok', function() {
+      test('max length for a non-amex cc is 3', function() {
+        var input = fixture('non-amex');
+        assert.equal(input.inputElement.maxLength, 3);
+      });
+
+      test('valid input error is not displayed', function() {
         var input = fixture('required');
         input.value='123';
         forceXIfStamp(input);
@@ -75,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
       });
 
-      test('invalid input is not ok', function() {
+      test('invalid input error is displayed', function() {
         var input = fixture('required');
         input.value='13';
         forceXIfStamp(input);
@@ -109,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       test('invalid input shows error message after manual validation', function() {
-        var input = fixture('amex');
+        var input = fixture('required-amex');
         forceXIfStamp(input);
         var error = Polymer.dom(input.root).querySelector('paper-input-error');
         assert.ok(error, 'paper-input-error exists');
@@ -118,6 +141,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
         input.validate();
         assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+      });
+    });
+
+    suite('validity', function() {
+
+      function checkValidity(cardType, inputValue, isValid) {
+        var input = fixture('validity-check');
+        if (cardType) input.cardType = cardType;
+        input.value = inputValue;
+        forceXIfStamp(input);
+
+        var container = Polymer.dom(input.root).querySelector('paper-input-container');
+        assert.ok(container, 'paper-input-container exists');
+        assert.isTrue(container.invalid == !isValid);
+      }
+
+      test('3 and 4 digit values are valid', function() {
+        checkValidity('', '12', false)
+        checkValidity('', '123', true)
+        checkValidity('', '1234', true)
+        checkValidity('', '12345', false)
+      });
+
+      test('only 4 digit value is valid for amex cards', function() {
+        checkValidity('amex', '12', false)
+        checkValidity('amex', '123', false)
+        checkValidity('amex', '1234', true)
+        checkValidity('amex', '12345', false)
+      });
+
+      test('only 3 digit value is valid for non-amex cards', function() {
+        checkValidity('visa', '12', false)
+        checkValidity('visa', '123', true)
+        checkValidity('visa', '1234', false)
+        checkValidity('visa', '12345', false)
       });
     });
 

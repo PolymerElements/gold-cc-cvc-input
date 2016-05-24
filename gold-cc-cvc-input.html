@@ -96,7 +96,7 @@ style this element.
             prevent-invalid-input allowed-pattern="[0-9]"
             required$="[[required]]"
             type="tel"
-            maxlength$="[[_requiredLength]]"
+            maxlength$="[[_maxLength]]"
             autocomplete="cc-csc"
             name$="[[name]]"
             disabled$="[[disabled]]"
@@ -142,9 +142,9 @@ style this element.
             value: ''
           },
 
-          _requiredLength: {
+          _maxLength: {
             type: Number,
-            computed: '_computeRequiredLength(cardType)'
+            computed: '_computeMaxLength(cardType)'
           },
 
           _amex: {
@@ -183,8 +183,18 @@ style this element.
           this._handleAutoValidate();
         },
 
-        _computeRequiredLength: function(cardType) {
+        _computeMaxLength: function(cardType) {
+          if (!cardType) return 4;
           return this._computeIsAmex(cardType) ? 4 : 3;
+        },
+
+        _validateLength: function(value, cardType) {
+          var length = value.length || 0;
+          if (!cardType) {
+            return length === 3 || length === 4;
+          } else {
+            return length === this._computeMaxLength(cardType);
+          }
         },
 
         _computeIsAmex: function(cardType) {
@@ -199,10 +209,10 @@ style this element.
          */
         validate: function() {
           // Empty, non-required input is valid.
-          var valid =
-              (this.$.input.validate() &&
-              this.value.length == this._requiredLength) ||
-              !this.required && this.value == '';
+
+          var isEmptyNotRequired = this.value == '' && !this.required;
+          var isValidValue = this._validateLength(this.value, this.cardType) && this.$.input.validate();
+          var valid = isEmptyNotRequired || isValidValue;
 
           // Update the container and its addons (i.e. the custom error-message).
           this.$.container.invalid = !valid;
