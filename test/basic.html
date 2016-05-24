@@ -177,6 +177,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         checkValidity('visa', '1234', false)
         checkValidity('visa', '12345', false)
       });
+
+      test('4-digit input becomes invalid when card type changes', function() {
+        var input = fixture('validity-check');
+        input.value='1234';
+        forceXIfStamp(input);
+
+        var container = Polymer.dom(input.root).querySelector('paper-input-container');
+        assert.ok(container, 'paper-input-container exists');
+        assert.isFalse(container.invalid);
+
+        input.cardType='visa';
+        assert.isTrue(container.invalid);
+
+        input.cardType='amex';
+        assert.isFalse(container.invalid);
+      });
     });
 
     suite('a11y', function() {

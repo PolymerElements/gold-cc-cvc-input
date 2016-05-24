@@ -139,7 +139,8 @@ style this element.
            */
           cardType: {
             type: String,
-            value: ''
+            value: '',
+            observer: '_onCardTypeChanged'
           },
 
           _maxLength: {
@@ -181,6 +182,13 @@ style this element.
           if (oldValue == undefined)
             return;
           this._handleAutoValidate();
+        },
+
+        _onCardTypeChanged: function(cardType, oldCardType) {
+          // The initial property assignment is handled by `ready`.
+          if (oldCardType == undefined)
+            return;
+          if (this.value) this._handleAutoValidate();
         },
 
         _computeMaxLength: function(cardType) {
