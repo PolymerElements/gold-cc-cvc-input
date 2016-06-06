@@ -51,6 +51,10 @@ See `Polymer.PaperInputBehavior` for more API docs.
 See `Polymer.PaperInputContainer` for a list of custom properties used to
 style this element.
 
+Custom property | Description | Default
+----------------|-------------|----------
+`--gold-cc-cvc-input-icon` | Mixin applied to the icon | `{}`
+
 @group Gold Elements
 @hero hero.svg
 @demo demo/index.html
@@ -65,6 +69,7 @@ style this element.
 
       iron-icon {
         margin-left: 10px;
+        @apply(--gold-cc-cvc-input-icon);
       }
 
       iron-icon[hidden] {
@@ -226,6 +231,5 @@ style this element.
       })
 
     })();
-
   </script>
 </dom-module>
