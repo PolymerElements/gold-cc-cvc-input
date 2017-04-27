@@ -105,7 +105,7 @@ Custom property | Description | Default
             autocomplete="cc-csc"
             name$="[[name]]"
             disabled$="[[disabled]]"
-            invalid="{{invalid}}"
+            invalid="[[invalid]]"
             autofocus$="[[autofocus]]"
             inputmode$="[[inputmode]]"
             placeholder$="[[placeholder]]"
@@ -160,6 +160,11 @@ Custom property | Description | Default
           value: {
             type: String,
             observer: '_onValueChanged'
+          },
+
+          invalid: {
+            type: String,
+            notify: true
           }
         },
 
@@ -209,6 +214,7 @@ Custom property | Description | Default
               this.value.length == this._requiredLength) ||
               !this.required && this.value == '';
 
+          this.invalid = !valid;
           // Update the container and its addons (i.e. the custom error-message).
           this.$.container.invalid = !valid;
           this.$.container.updateAddons({
