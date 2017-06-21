@@ -246,6 +246,9 @@ Custom property | Description | Default
           else if (this.value && !Polymer.Element) {
              this._handleAutoValidate();
           }
+
+          this.$.icon.src = this.resolveUrl(this.$.icon.src);
+          this.$.amexIcon.src = this.resolveUrl(this.$.amexIcon.src);
         },
 
         beforeRegister: function() {
