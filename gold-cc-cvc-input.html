@@ -184,8 +184,8 @@ Custom property | Description | Default
           size$="[[size]]">
     </iron-input>
       <div class="icon-container" slot="suffix">
-        <iron-icon id="icon" src="cvc_hint.png" hidden$="[[_amex]]" alt="cvc"></iron-icon>
-        <iron-icon id="amexIcon" hidden$="[[!_amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
+        <iron-icon id="icon" src="[[resolveUrl('cvc_hint.png')]]" hidden$="[[_amex]]" alt="cvc"></iron-icon>
+        <iron-icon id="amexIcon" hidden$="[[!_amex]]" src="[[resolveUrl('cvc_hint_amex.png')]]" alt="amex cvc"></iron-icon>
       </div>
     </template>
 
@@ -246,9 +246,6 @@ Custom property | Description | Default
           else if (this.value && !Polymer.Element) {
              this._handleAutoValidate();
           }
-
-          this.$.icon.src = this.resolveUrl(this.$.icon.src);
-          this.$.amexIcon.src = this.resolveUrl(this.$.amexIcon.src);
         },
 
         beforeRegister: function() {
