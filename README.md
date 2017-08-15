@@ -13,11 +13,9 @@ thing! https://github.com/PolymerLabs/tedium/issues
 -->
 
 [![Build status](https://travis-ci.org/PolymerElements/gold-cc-cvc-input.svg?branch=master)](https://travis-ci.org/PolymerElements/gold-cc-cvc-input)
+[![Demo and API Docs](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerElements/gold-cc-cvc-input)
 
-_[Demo and API docs](https://elements.polymer-project.org/elements/gold-cc-cvc-input)_
-
-
-##&lt;gold-cc-cvc-input&gt;
+## &lt;gold-cc-cvc-input&gt;
 
 `gold-cc-cvc-input` is a single-line text field with Material Design styling
 for entering a credit card's CVC (Card Verification Code). It supports both
