@@ -143,7 +143,6 @@ Custom property | Description | Default
           allowed-pattern="[0-9]"
           required$="[[required]]"
           type="tel"
-          maxlength$="[[_requiredLength]]"
           autocomplete="cc-csc"
           name$="[[name]]"
           disabled$="[[disabled]]"
@@ -152,6 +151,7 @@ Custom property | Description | Default
           inputmode$="[[inputmode]]"
           placeholder$="[[placeholder]]"
           readonly$="[[readonly]]"
+          maxlength$="[[_requiredLength]]"
           size$="[[size]]">
       <div class="icon-container" slot="suffix">
         <iron-icon id="icon" src="cvc_hint.png" hidden$="[[_amex]]" alt="cvc"></iron-icon>
@@ -162,18 +162,14 @@ Custom property | Description | Default
 
   <template id="v1">
     <iron-input id="input" slot="input"
-        allowed-pattern="[0-9]"
         bind-value="{{value}}"
-        invalid="{{invalid}}"
-        maxlength$="[[_requiredLength]]">
+        allowed-pattern="[0-9]"
+        invalid="{{invalid}}">
       <input id="nativeInput"
           aria-labelledby$="[[_ariaLabelledBy]]"
           aria-describedby$="[[_ariaDescribedBy]]"
-          invalid$="{{invalid}}"
-          maxlength$="[[_requiredLength]]"
           required$="[[required]]"
           type="tel"
-          prevent-invalid-input
           autocomplete="cc-csc"
           name$="[[name]]"
           disabled$="[[disabled]]"
@@ -181,6 +177,7 @@ Custom property | Description | Default
           inputmode$="[[inputmode]]"
           placeholder$="[[placeholder]]"
           readonly$="[[readonly]]"
+          maxlength$="[[_requiredLength]]"
           size$="[[size]]">
     </iron-input>
       <div class="icon-container" slot="suffix">
