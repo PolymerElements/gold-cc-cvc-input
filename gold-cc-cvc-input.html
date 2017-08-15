@@ -224,6 +224,7 @@ Custom property | Description | Default
             type: String,
             observer: '_onValueChanged'
           }
+
         },
 
         behaviors: [
@@ -246,16 +247,13 @@ Custom property | Description | Default
         },
 
         beforeRegister: function() {
-          this._beforeRegister();
-        },
-
-        _beforeRegister: function() {
           var template = Polymer.DomModule.import('gold-cc-cvc-input', 'template');
           var version = Polymer.Element ? 'v1' : 'v0';
           var inputTemplate = Polymer.DomModule.import('gold-cc-cvc-input', 'template#' + version);
           var inputPlaceholder = template.content.querySelector('#template-placeholder');
           inputPlaceholder.parentNode.replaceChild(inputTemplate.content, inputPlaceholder);
         },
+
         /**
         * Returns a reference to the focusable element. Overridden from PaperInputBehavior
         * to correctly focus the native input.
@@ -263,12 +261,14 @@ Custom property | Description | Default
         get _focusableElement() {
           return Polymer.Element ? this.inputElement._inputElement : this.inputElement;
         },
+
         // Note: This event is only available in the 1.0 version of this element.
         // In 2.0, the functionality of `_onIronInputReady` is done in
         // PaperInputBehavior::attached.
         listeners: {
           'iron-input-ready': '_onIronInputReady'
         },
+
         _onIronInputReady: function() {
           // Only validate when attached if the input already has a value.
           if (!!this.inputElement.bindValue) {
@@ -281,8 +281,9 @@ Custom property | Description | Default
          */
         _onValueChanged: function(value, oldValue) {
           // The initial property assignment is handled by `ready`.
-          if (oldValue == undefined)
+          if (oldValue == undefined) {
             return;
+          }
           this._handleAutoValidate();
         },
 
