@@ -49,106 +49,143 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
+    function getIronInput(paperInput) {
+      return paperInput.inputElement;
+    }
+    function getNativeInput(paperInput) {
+      return Polymer.Element ?
+          paperInput.$.nativeInput : paperInput.inputElement;
+    }
+
     suite('basic', function() {
 
       test('max length for a non-amex cc is 3', function() {
         var input = fixture('basic');
-        assert.equal(input.inputElement.maxLength, 3);
+        var inputElement = getNativeInput(input);
+        assert.equal(inputElement.maxLength, 3);
       });
 
       test('max length for an amex cc is 4', function() {
         var input = fixture('amex');
-        assert.equal(input.inputElement.maxLength, 4);
+        var inputElement = getNativeInput(input);
+        assert.equal(inputElement.maxLength, 4);
       });
 
-      test('invalid property is not ok', function() {
+      test('invalid property is not ok', function(done) {
         var input = fixture('required');
         input.value='13';
-        forceXIfStamp(input);
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
 
-        assert.isTrue(input.invalid);
+          assert.isTrue(input.invalid);
+          done();
+        }, 1);
       });
 
-      test('invalid property is ok', function() {
+      test('invalid property is ok', function(done) {
         var input = fixture('required');
         input.value='134';
-        forceXIfStamp(input);
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
 
-        assert.isFalse(input.invalid);
+          assert.isFalse(input.invalid);
+
+          done();
+        }, 1);
       });
 
-      test('valid input is ok', function() {
+      test('valid input is ok', function(done) {
         var input = fixture('required');
         input.value='123';
-        forceXIfStamp(input);
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
 
-        var container = Polymer.dom(input.root).querySelector('paper-input-container');
-        assert.ok(container, 'paper-input-container exists');
-        assert.isFalse(container.invalid);
+          var container = Polymer.dom(input.root).querySelector('paper-input-container');
+          assert.ok(container, 'paper-input-container exists');
+          assert.isFalse(container.invalid);
 
-        var error = Polymer.dom(input.root).querySelector('paper-input-error');
-        assert.ok(error, 'paper-input-error exists');
-        assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
+          var error = Polymer.dom(input.root).querySelector('paper-input-error');
+          assert.ok(error, 'paper-input-error exists');
+          assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
+          done();
+        }, 1);
       });
 
-      test('invalid input is not ok', function() {
+      test('invalid input is not ok', function(done) {
         var input = fixture('required');
         input.value='13';
-        forceXIfStamp(input);
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
 
-        var container = Polymer.dom(input.root).querySelector('paper-input-container');
-        assert.ok(container, 'paper-input-container exists');
-        assert.isTrue(container.invalid);
+          var container = Polymer.dom(input.root).querySelector('paper-input-container');
+          assert.ok(container, 'paper-input-container exists');
+          assert.isTrue(container.invalid);
 
-        var error = Polymer.dom(input.root).querySelector('paper-input-error');
-        assert.ok(error, 'paper-input-error exists');
-        assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          var error = Polymer.dom(input.root).querySelector('paper-input-error');
+          assert.ok(error, 'paper-input-error exists');
+          assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          done();
+        }, 1);
       });
 
-      test('empty required input shows error on blur', function() {
+      test('empty required input shows error on blur', function(done) {
         var input = fixture('required');
-        forceXIfStamp(input);
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
 
-        var container = Polymer.dom(input.root).querySelector('paper-input-container');
-        assert.ok(container, 'paper-input-container exists');
-        assert.isFalse(container.invalid);
+          var container = Polymer.dom(input.root).querySelector('paper-input-container');
+          assert.ok(container, 'paper-input-container exists');
+          assert.isFalse(container.invalid);
 
-        var error = Polymer.dom(input.root).querySelector('paper-input-error');
-        assert.ok(error, 'paper-input-error exists');
+          var error = Polymer.dom(input.root).querySelector('paper-input-error');
+          assert.ok(error, 'paper-input-error exists');
 
-        assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
-        MockInteractions.focus(input);
-        MockInteractions.blur(input);
+          assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
+          MockInteractions.focus(input);
+          MockInteractions.blur(input);
 
-        assert.isTrue(container.invalid);
-        assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          assert.isTrue(container.invalid);
+          assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          done();
+        }, 1);
       });
 
-      test('invalid input shows error message after manual validation', function() {
+      test('invalid input shows error message after manual validation', function(done) {
         var input = fixture('amex');
-        forceXIfStamp(input);
-        var error = Polymer.dom(input.root).querySelector('paper-input-error');
-        assert.ok(error, 'paper-input-error exists');
+        Polymer.Base.async(function() {
+          forceXIfStamp(input);
+          var error = Polymer.dom(input.root).querySelector('paper-input-error');
+          assert.ok(error, 'paper-input-error exists');
 
-        // The error message is only displayed after manual validation.
-        assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
-        input.validate();
-        assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          // The error message is only displayed after manual validation.
+          assert.equal(getComputedStyle(error).visibility, 'hidden', 'error is visibility:hidden');
+          input.validate();
+          assert.notEqual(getComputedStyle(error).visibility, 'hidden', 'error is not visibility:hidden');
+          done();
+        }, 1);
       });
     });
 
     suite('a11y', function() {
 
-      test('has aria-labelledby', function() {
+      test('has aria-labelledby', function(done) {
         var input = fixture('basic');
-        assert.isTrue(input.inputElement.hasAttribute('aria-labelledby'))
-        assert.equal(input.inputElement.getAttribute('aria-labelledby'), Polymer.dom(input.root).querySelector('label').id, 'aria-labelledby points to the label');
+        Polymer.Base.async(function() {
+          var nativeInput = getNativeInput(input);
+          assert.isTrue(nativeInput.hasAttribute('aria-labelledby'))
+          assert.equal(nativeInput.getAttribute('aria-labelledby'), Polymer.dom(input.root).querySelector('label').id, 'aria-labelledby points to the label');
+          done();
+        }, 1);
       });
 
-      test('required and error has aria-labelledby', function() {
+       test('required and error has aria-labelledby', function(done) {
         var input = fixture('required');
-        assert.isTrue(input.inputElement.hasAttribute('aria-labelledby'))
-        assert.equal(input.inputElement.getAttribute('aria-labelledby'), Polymer.dom(input.root).querySelector('label').id, 'aria-labelledby points to the label');
+        Polymer.Base.async(function() {
+          var nativeInput = getNativeInput(input);
+          assert.isTrue(nativeInput.hasAttribute('aria-labelledby'))
+          assert.equal(nativeInput.getAttribute('aria-labelledby'), Polymer.dom(input.root).querySelector('label').id, 'aria-labelledby points to the label');
+          done();
+        }, 1);
       });
 
     });
