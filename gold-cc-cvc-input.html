@@ -188,153 +188,131 @@ Custom property | Description | Default
 
   <script>
     (function() {
-      Polymer({
+    Polymer({
 
-        is: 'gold-cc-cvc-input',
+      is: 'gold-cc-cvc-input',
 
-        properties: {
-
-          /**
-           * The label for this input.
-           */
-          label: {
-            type: String,
-            value: 'CVC'
-          },
-
-          /**
-           * The type of card that the CVC is for.
-           */
-          cardType: {
-            type: String,
-            value: ''
-          },
-
-          _requiredLength: {
-            type: Number,
-            computed: '_computeRequiredLength(cardType)'
-          },
-
-          _amex: {
-            type: Boolean,
-            computed: '_computeIsAmex(cardType)'
-          },
-
-          value: {
-            type: String,
-            observer: '_onValueChanged'
-          }
-
-        },
-
-        behaviors: [
-          Polymer.PaperInputBehavior,
-          Polymer.IronFormElementBehavior
-        ],
-
-        observers: [
-          '_onFocusedChanged(focused)'
-        ],
-
-        ready: function() {
-          if (!this.value && Polymer.Element) {
-            this.value = '';
-          }
-
-          else if (this.value && !Polymer.Element) {
-             this._handleAutoValidate();
-          }
-        },
-
-        beforeRegister: function() {
-          var template = Polymer.DomModule.import('gold-cc-cvc-input', 'template');
-          var version = Polymer.Element ? 'v1' : 'v0';
-          var inputTemplate = Polymer.DomModule.import('gold-cc-cvc-input', 'template#' + version);
-          var inputPlaceholder = template.content.querySelector('#template-placeholder');
-          if (inputPlaceholder) {
-            inputPlaceholder.parentNode.replaceChild(inputTemplate.content, inputPlaceholder);
-          }
-        },
+      properties: {
 
         /**
-        * Returns a reference to the focusable element. Overridden from PaperInputBehavior
-        * to correctly focus the native input.
-        */
-        get _focusableElement() {
-          return Polymer.Element ? this.inputElement._inputElement : this.inputElement;
-        },
-
-        // Note: This event is only available in the 2.0 version of this element.
-        // In 1.0, the functionality of `_onIronInputReady` is done in
-        // PaperInputBehavior::attached.
-        listeners: {
-          'iron-input-ready': '_onIronInputReady'
-        },
-
-        _onIronInputReady: function() {
-          // Only validate when attached if the input already has a value.
-          if (!!this.inputElement.bindValue) {
-            this._handleAutoValidate();
-          }
-        },
-
-        /**
-         * A handler that is called on input
+         * The label for this input.
          */
-        _onValueChanged: function(value, oldValue) {
-          // The initial property assignment is handled by `ready`.
-          if (oldValue == undefined) {
-            return;
-          }
-          this._handleAutoValidate();
-        },
-
-        _computeRequiredLength: function(cardType) {
-          return this._computeIsAmex(cardType) ? 4 : 3;
-        },
-
-        _computeIsAmex: function(cardType) {
-          return cardType.toLowerCase() == 'amex';
-        },
+        label: {type: String, value: 'CVC'},
 
         /**
-         * Returns true if the element has a valid value, and sets the visual
-         * error state.
-         *
-         * @return {boolean} Whether the input is currently valid or not.
+         * The type of card that the CVC is for.
          */
-        validate: function() {
-          // Empty, non-required input is valid.
-          var valid =
-              (this.$.input.validate() &&
-              this.value.length == this._requiredLength) ||
-              !this.required && this.value == '';
+        cardType: {type: String, value: ''},
 
-          this.invalid = !valid;
-          // Update the container and its addons (i.e. the custom error-message).
-          this.$.container.invalid = !valid;
-          this.$.container.updateAddons({
-            inputElement: this.$.input,
-            value: this.value,
-            invalid: !valid
-          });
+        _requiredLength:
+            {type: Number, computed: '_computeRequiredLength(cardType)'},
 
-          return valid;
-        },
+        _amex: {type: Boolean, computed: '_computeIsAmex(cardType)'},
 
-        /**
-         * Overidden from Polymer.IronControlState.
-         */
-        _onFocusedChanged: function(focused) {
-          if (!this._focusableElement) {
-            return;
-          }
-          if (!focused) {
-            this._handleAutoValidate();
-          }
+        value: {type: String, observer: '_onValueChanged'}
+
+      },
+
+      behaviors: [Polymer.PaperInputBehavior, Polymer.IronFormElementBehavior],
+
+      observers: ['_onFocusedChanged(focused)'],
+
+      ready: function() {
+        if (!this.value && Polymer.Element) {
+          this.value = '';
         }
-      })
 
+        else if (this.value && !Polymer.Element) {
+          this._handleAutoValidate();
+        }
+      },
+
+      beforeRegister: function() {
+        var template = Polymer.DomModule.import('gold-cc-cvc-input', 'template');
+        var version = Polymer.Element ? 'v1' : 'v0';
+        var inputTemplate =
+            Polymer.DomModule.import('gold-cc-cvc-input', 'template#' + version);
+        var inputPlaceholder =
+            template.content.querySelector('#template-placeholder');
+        if (inputPlaceholder) {
+          inputPlaceholder.parentNode.replaceChild(
+              inputTemplate.content, inputPlaceholder);
+        }
+      },
+
+      /**
+       * Returns a reference to the focusable element. Overridden from
+       * PaperInputBehavior to correctly focus the native input.
+       */
+      get _focusableElement() {
+        return Polymer.Element ? this.inputElement._inputElement :
+                                 this.inputElement;
+      },
+
+      // Note: This event is only available in the 2.0 version of this element.
+      // In 1.0, the functionality of `_onIronInputReady` is done in
+      // PaperInputBehavior::attached.
+      listeners: {'iron-input-ready': '_onIronInputReady'},
+
+      _onIronInputReady: function() {
+        // Only validate when attached if the input already has a value.
+        if (!!this.inputElement.bindValue) {
+          this._handleAutoValidate();
+        }
+      },
+
+      /**
+       * A handler that is called on input
+       */
+      _onValueChanged: function(value, oldValue) {
+        // The initial property assignment is handled by `ready`.
+        if (oldValue == undefined) {
+          return;
+        }
+        this._handleAutoValidate();
+      },
+
+      _computeRequiredLength: function(cardType) {
+        return this._computeIsAmex(cardType) ? 4 : 3;
+      },
+
+      _computeIsAmex: function(cardType) {
+        return cardType.toLowerCase() == 'amex';
+      },
+
+      /**
+       * Returns true if the element has a valid value, and sets the visual
+       * error state.
+       *
+       * @return {boolean} Whether the input is currently valid or not.
+       */
+      validate: function() {
+        // Empty, non-required input is valid.
+        var valid = (this.$.input.validate() &&
+                     this.value.length == this._requiredLength) ||
+            !this.required && this.value == '';
+
+        this.invalid = !valid;
+        // Update the container and its addons (i.e. the custom error-message).
+        this.$.container.invalid = !valid;
+        this.$.container.updateAddons(
+            {inputElement: this.$.input, value: this.value, invalid: !valid});
+
+        return valid;
+      },
+
+      /**
+       * Overidden from Polymer.IronControlState.
+       */
+      _onFocusedChanged: function(focused) {
+        if (!this._focusableElement) {
+          return;
+        }
+        if (!focused) {
+          this._handleAutoValidate();
+        }
+      }
+    })
     })();
   </script>
 </dom-module>
