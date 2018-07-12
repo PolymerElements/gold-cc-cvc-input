@@ -1,19 +1,6 @@
-
-<!---
-
-This README is automatically generated from the comments in these files:
-gold-cc-cvc-input.html
-
-Edit those files, and our readme bot will duplicate them over here!
-Edit this file, and the bot will squash your changes :)
-
-The bot does some handling of markdown. Please file a bug if it does the wrong
-thing! https://github.com/PolymerLabs/tedium/issues
-
--->
-
+[![Published on NPM](https://img.shields.io/npm/v/@polymer/gold-cc-cvc-input.svg)](https://www.npmjs.com/package/@polymer/gold-cc-cvc-input)
 [![Build status](https://travis-ci.org/PolymerElements/gold-cc-cvc-input.svg?branch=master)](https://travis-ci.org/PolymerElements/gold-cc-cvc-input)
-[![Demo and API Docs](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerElements/gold-cc-cvc-input)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://webcomponents.org/element/@polymer/gold-cc-cvc-input)
 
 ## &lt;gold-cc-cvc-input&gt;
 
@@ -21,44 +8,68 @@ thing! https://github.com/PolymerLabs/tedium/issues
 for entering a credit card's CVC (Card Verification Code). It supports both
 4-digit Amex CVCs and non-Amex 3-digit CVCs
 
-```html
-<gold-cc-cvc-input></gold-cc-cvc-input>
+See: [Documentation](https://www.webcomponents.org/element/@polymer/gold-cc-cvc-input),
+  [Demo](https://www.webcomponents.org/element/@polymer/gold-cc-cvc-input/demo/demo/index.html).
 
-<gold-cc-cvc-input card-type="amex"></gold-cc-cvc-input>
+## Usage
+
+### Installation
+```
+npm install --save @polymer/gold-cc-cvc-input
 ```
 
-It may include an optional label, which by default is "CVC".
-
+### In an html file
 ```html
-<gold-cc-cvc-input label="Card Verification Value"></gold-cc-cvc-input>
+<html>
+  <head>
+    <script type="module">
+      import '@polymer/gold-cc-input/gold-cc-input.js';
+      import '@polymer/gold-cc-cvc-input/gold-cc-cvc-input.js';
+    </script>
+  </head>
+  <body>
+    <gold-cc-input card-type="{{cardType}}"></gold-cc-input>
+    <gold-cc-cvc-input card-type="[[cardType]]"></gold-cc-cvc-input>
+  </body>
+</html>
 ```
 
-It can be used together with a `gold-cc-input` by binding the `cardType` property:
+### In a Polymer 3 element
+```js
+import {PolymerElement, html} from '@polymer/polymer';
+import '@polymer/gold-cc-input/gold-cc-input.js';
+import '@polymer/gold-cc-cvc-input/gold-cc-cvc-input.js';
 
-```html
-<gold-cc-input card-type="{{cardType}}"></gold-cc-input>
-<gold-cc-cvc-input card-type="[[cardType]]"></gold-cc-cvc-input>
+class SampleElement extends PolymerElement {
+  static get template() {
+    return html`
+      <gold-cc-input card-type="{{cardType}}"></gold-cc-input>
+      <gold-cc-cvc-input card-type="[[cardType]]"></gold-cc-cvc-input>
+    `;
+  }
+}
+customElements.define('sample-element', SampleElement);
 ```
 
-### Validation
+## Contributing
+If you want to send a PR to this element, here are
+the instructions for running the tests and demo locally:
 
-The input considers a valid amex CVC to be 4 digits long, and 3 digits otherwise.
-The `amex` attribute can also be bound to a `gold-cc-input`'s `card-type` attribute.
+### Installation
+```sh
+git clone https://github.com/PolymerElements/gold-cc-cvc-input
+cd gold-cc-cvc-input
+npm install
+npm install -g polymer-cli
+```
 
-The input can be automatically validated as the user is typing by using
-the `auto-validate` and `required` attributes. For manual validation, the
-element also has a `validate()` method, which returns the validity of the
-input as well sets any appropriate error messages and styles.
+### Running the demo locally
+```sh
+polymer serve --npm
+open http://127.0.0.1:<port>/demo/
+```
 
-See `Polymer.PaperInputBehavior` for more API docs.
-
-### Styling
-
-See `Polymer.PaperInputContainer` for a list of custom properties used to
-style this element.
-
-| Custom property | Description | Default |
-| --- | --- | --- |
-| `--gold-cc-cvc-input-icon` | Mixin applied to the icon | `{}` |
-
-
+### Running the tests
+```sh
+polymer test --npm
+```
