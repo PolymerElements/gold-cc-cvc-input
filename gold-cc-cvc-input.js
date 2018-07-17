@@ -1,12 +1,25 @@
 /**
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+This code may only be used under the BSD style license found at
+http://polymer.github.io/LICENSE.txt The complete set of authors may be found at
+http://polymer.github.io/AUTHORS.txt The complete set of contributors may be
+found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
+part of the polymer project is also subject to an additional IP rights grant
+found at http://polymer.github.io/PATENTS.txt
 */
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/paper-input/paper-input-container.js';
+import '@polymer/paper-input/paper-input-error.js';
+import '@polymer/iron-input/iron-input.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+
+import {IronFormElementBehavior} from '@polymer/iron-form-element-behavior/iron-form-element-behavior.js';
+import {PaperInputBehavior} from '@polymer/paper-input/paper-input-behavior.js';
+import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
 /**
 `gold-cc-cvc-input` is a single-line text field with Material Design styling
 for entering a credit card's CVC (Card Verification Code). It supports both
@@ -20,15 +33,17 @@ It may include an optional label, which by default is "CVC".
 
     <gold-cc-cvc-input label="Card Verification Value"></gold-cc-cvc-input>
 
-It can be used together with a `gold-cc-input` by binding the `cardType` property:
+It can be used together with a `gold-cc-input` by binding the `cardType`
+property:
 
     <gold-cc-input card-type="{{cardType}}"></gold-cc-input>
     <gold-cc-cvc-input card-type="[[cardType]]"></gold-cc-cvc-input>
 
 ### Validation
 
-The input considers a valid amex CVC to be 4 digits long, and 3 digits otherwise.
-The `amex` attribute can also be bound to a `gold-cc-input`'s `card-type` attribute.
+The input considers a valid amex CVC to be 4 digits long, and 3 digits
+otherwise. The `amex` attribute can also be bound to a `gold-cc-input`'s
+`card-type` attribute.
 
 The input can be automatically validated as the user is typing by using
 the `auto-validate` and `required` attributes. For manual validation, the
@@ -47,31 +62,10 @@ Custom property | Description | Default
 `--gold-cc-cvc-input-icon` | Mixin applied to the icon | `{}`
 
 @group Gold Elements
-@hero hero.svg
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
-
-import { PaperInputBehavior } from '@polymer/paper-input/paper-input-behavior.js';
-import '@polymer/paper-input/paper-input-container.js';
-import '@polymer/paper-input/paper-input-error.js';
-import '@polymer/iron-input/iron-input.js';
-import '@polymer/iron-icon/iron-icon.js';
-import { IronFormElementBehavior } from '@polymer/iron-form-element-behavior/iron-form-element-behavior.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { DomModule } from '@polymer/polymer/lib/elements/dom-module.js';
-const $_documentContainer = document.createElement('template');
-$_documentContainer.setAttribute('style', 'display: none;');
-
-$_documentContainer.innerHTML = `<dom-module id="gold-cc-cvc-input">
-  <template>
+Polymer({
+  _template: html`
     <style>
       :host {
         display: block;
@@ -92,8 +86,6 @@ $_documentContainer.innerHTML = `<dom-module id="gold-cc-cvc-input">
 
       input {
         @apply --layout-flex;
-      }
-      input {
         position: relative; /* to make a stacking context */
         outline: none;
         box-shadow: none;
@@ -129,62 +121,56 @@ $_documentContainer.innerHTML = `<dom-module id="gold-cc-cvc-input">
 
       <label slot="label" hidden\$="[[!label]]">[[label]]</label>
 
-      <span id="template-placeholder"></span>
+      <iron-input id="input" slot="input" bind-value="{{value}}" allowed-pattern="[0-9]" invalid="{{invalid}}">
+        <input id="nativeInput" aria-labelledby\$="[[_ariaLabelledBy]]" aria-describedby\$="[[_ariaDescribedBy]]" required\$="[[required]]" type="tel" autocomplete="cc-csc" name\$="[[name]]" disabled\$="[[disabled]]" autofocus\$="[[autofocus]]" inputmode\$="[[inputmode]]" placeholder\$="[[placeholder]]" readonly\$="[[readonly]]" maxlength\$="[[_requiredLength]]" size\$="[[size]]">
+      </iron-input>
+      <div class="icon-container" slot="suffix">
+        <iron-icon id="icon" src="[[resolveUrl('cvc_hint.png')]]" hidden\$="[[_amex]]" alt="cvc"></iron-icon>
+        <iron-icon id="amexIcon" hidden\$="[[!_amex]]" src="[[resolveUrl('cvc_hint_amex.png')]]" alt="amex cvc"></iron-icon>
+      </div>
 
       <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error slot="add-on">[[errorMessage]]</paper-input-error>
       </template>
 
     </paper-input-container>
-  </template>
-
-
-  <template id="v0">
-    <div class="container">
-      <input is="iron-input" id="input" slot="input" aria-labelledby\$="[[_ariaLabelledBy]]" aria-describedby\$="[[_ariaDescribedBy]]" bind-value="{{value}}" prevent-invalid-input="" allowed-pattern="[0-9]" required\$="[[required]]" type="tel" autocomplete="cc-csc" name\$="[[name]]" disabled\$="[[disabled]]" invalid="{{invalid}}" autofocus\$="[[autofocus]]" inputmode\$="[[inputmode]]" placeholder\$="[[placeholder]]" readonly\$="[[readonly]]" maxlength\$="[[_requiredLength]]" size\$="[[size]]">
-      <div class="icon-container" slot="suffix">
-        <iron-icon id="icon" src="cvc_hint.png" hidden\$="[[_amex]]" alt="cvc"></iron-icon>
-        <iron-icon id="amexIcon" hidden\$="[[!_amex]]" src="cvc_hint_amex.png" alt="amex cvc"></iron-icon>
-      </div>
-   </div>
-  </template>
-
-  <template id="v1">
-    <iron-input id="input" slot="input" bind-value="{{value}}" allowed-pattern="[0-9]" invalid="{{invalid}}">
-      <input id="nativeInput" aria-labelledby\$="[[_ariaLabelledBy]]" aria-describedby\$="[[_ariaDescribedBy]]" required\$="[[required]]" type="tel" autocomplete="cc-csc" name\$="[[name]]" disabled\$="[[disabled]]" autofocus\$="[[autofocus]]" inputmode\$="[[inputmode]]" placeholder\$="[[placeholder]]" readonly\$="[[readonly]]" maxlength\$="[[_requiredLength]]" size\$="[[size]]">
-    </iron-input>
-      <div class="icon-container" slot="suffix">
-        <iron-icon id="icon" src="[[resolveUrl('cvc_hint.png')]]" hidden\$="[[_amex]]" alt="cvc"></iron-icon>
-        <iron-icon id="amexIcon" hidden\$="[[!_amex]]" src="[[resolveUrl('cvc_hint_amex.png')]]" alt="amex cvc"></iron-icon>
-      </div>
-    </template>
-
-  
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
+  `,
   is: 'gold-cc-cvc-input',
+
+  importMeta: import.meta,
 
   properties: {
 
     /**
      * The label for this input.
      */
-    label: {type: String, value: 'CVC'},
+    label: {
+      type: String,
+      value: 'CVC',
+    },
 
     /**
      * The type of card that the CVC is for.
      */
-    cardType: {type: String, value: ''},
+    cardType: {
+      type: String,
+      value: '',
+    },
 
-    _requiredLength:
-        {type: Number, computed: '_computeRequiredLength(cardType)'},
+    _requiredLength: {
+      type: Number,
+      computed: '_computeRequiredLength(cardType)',
+    },
 
-    _amex: {type: Boolean, computed: '_computeIsAmex(cardType)'},
+    _amex: {
+      type: Boolean,
+      computed: '_computeIsAmex(cardType)',
+    },
 
-    value: {type: String, observer: '_onValueChanged'}
+    value: {
+      type: String,
+      observer: '_onValueChanged',
+    }
 
   },
 
@@ -193,25 +179,8 @@ Polymer({
   observers: ['_onFocusedChanged(focused)'],
 
   ready: function() {
-    if (!this.value && PolymerElement) {
+    if (!this.value) {
       this.value = '';
-    }
-
-    else if (this.value && !PolymerElement) {
-      this._handleAutoValidate();
-    }
-  },
-
-  beforeRegister: function() {
-    var template = DomModule.import('gold-cc-cvc-input', 'template');
-    var version = PolymerElement ? 'v1' : 'v0';
-    var inputTemplate =
-        DomModule.import('gold-cc-cvc-input', 'template#' + version);
-    var inputPlaceholder =
-        template.content.querySelector('#template-placeholder');
-    if (inputPlaceholder) {
-      inputPlaceholder.parentNode.replaceChild(
-          inputTemplate.content, inputPlaceholder);
     }
   },
 
@@ -220,8 +189,7 @@ Polymer({
    * PaperInputBehavior to correctly focus the native input.
    */
   get _focusableElement() {
-    return PolymerElement ? this.inputElement._inputElement :
-                             this.inputElement;
+    return this.inputElement._inputElement;
   },
 
   // Note: This event is only available in the 2.0 version of this element.
