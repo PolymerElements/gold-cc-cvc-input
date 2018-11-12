@@ -117,16 +117,16 @@ Polymer({
       }
     </style>
 
-    <paper-input-container id="container" disabled\$="[[disabled]]" no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" invalid="[[invalid]]">
+    <paper-input-container id="container" disabled$="[[disabled]]" no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" invalid="[[invalid]]">
 
-      <label slot="label" hidden\$="[[!label]]">[[label]]</label>
+      <label slot="label" hidden$="[[!label]]">[[label]]</label>
 
       <iron-input id="input" slot="input" bind-value="{{value}}" allowed-pattern="[0-9]" invalid="{{invalid}}">
-        <input id="nativeInput" aria-labelledby\$="[[_ariaLabelledBy]]" aria-describedby\$="[[_ariaDescribedBy]]" required\$="[[required]]" type="tel" autocomplete="cc-csc" name\$="[[name]]" disabled\$="[[disabled]]" autofocus\$="[[autofocus]]" inputmode\$="[[inputmode]]" placeholder\$="[[placeholder]]" readonly\$="[[readonly]]" maxlength\$="[[_requiredLength]]" size\$="[[size]]">
+        <input id="nativeInput" aria-labelledby$="[[_ariaLabelledBy]]" aria-describedby$="[[_ariaDescribedBy]]" required$="[[required]]" type="tel" autocomplete="cc-csc" name$="[[name]]" disabled$="[[disabled]]" autofocus$="[[autofocus]]" inputmode$="[[inputmode]]" placeholder$="[[placeholder]]" readonly$="[[readonly]]" maxlength$="[[_requiredLength]]" size$="[[size]]">
       </iron-input>
       <div class="icon-container" slot="suffix">
-        <iron-icon id="icon" src="[[resolveUrl('cvc_hint.png')]]" hidden\$="[[_amex]]" alt="cvc"></iron-icon>
-        <iron-icon id="amexIcon" hidden\$="[[!_amex]]" src="[[resolveUrl('cvc_hint_amex.png')]]" alt="amex cvc"></iron-icon>
+        <iron-icon id="icon" src="[[resolveUrl('cvc_hint.png')]]" hidden$="[[_amex]]" alt="cvc"></iron-icon>
+        <iron-icon id="amexIcon" hidden$="[[!_amex]]" src="[[resolveUrl('cvc_hint_amex.png')]]" alt="amex cvc"></iron-icon>
       </div>
 
       <template is="dom-if" if="[[errorMessage]]">
